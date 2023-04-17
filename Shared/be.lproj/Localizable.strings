@@ -166,6 +166,9 @@
 /* The label text in the Button Toast for switching to a fresh New Private Tab. */
 "ContextMenu.ButtonToast.NewPrivateTabOpened.LabelText" = "Адкрыта новая прыватная картка";
 
+/* The label text in the Button Toast for switching to a fresh New Private Tab. */
+"ContextMenu.ButtonToast.NewPrivateTabOpened.LabelText.v113" = "Адкрыта новая прыватная картка";
+
 /* The button text in the Button Toast for switching to a fresh New Tab. */
 "ContextMenu.ButtonToast.NewTabOpened.ButtonText" = "Перайсці";
 
@@ -871,6 +874,9 @@
 /* The title for the option to view the What's new page. */
 "Menu.WhatsNew.Title" = "Што новага";
 
+/* Label for the zoom page button in the menu, used to show the Zoom Page bar. The placeholder shows the current zoom level in percent. */
+"Menu.ZoomPage.Title.v113" = "Маштаб (%@)";
+
 /* Accessibility label for Mobile Device image in remote tabs list */
 "mobile device" = "мабільнае прылада";
 
@@ -1453,6 +1459,9 @@
 /* Option in settings to show a blank page when you open a new tab */
 "Settings.NewTab.Option.BlankPage" = "Пустая старонка";
 
+/* Option in settings to show your homepage when you open a new tab */
+"Settings.NewTab.Option.Custom" = "Уласная";
+
 /* Option in settings to show Firefox Home when you open a new tab */
 "Settings.NewTab.Option.FirefoxHome" = "Хатняя старонка Firefox";
 
@@ -1579,6 +1588,9 @@
 /* Dismiss button for the tracker protection alert. */
 "Settings.TrackingProtection.Alert.Button" = "OK, зразумела";
 
+/* Decription for the tracker protection alert. */
+"Settings.TrackingProtection.Alert.Description" = "Калі сайт не працуе належным чынам, краніце значок шчыта ў адрасным радку і адключыце ўзмоцненую ахову ад сачэння на гэтай старонцы.";
+
 /* Title for the tracker protection alert. */
 "Settings.TrackingProtection.Alert.Title" = "Увага!";
 
@@ -1590,6 +1602,12 @@
 
 /* Additional information about your Enhanced Tracking Protection */
 "Settings.TrackingProtection.ProtectionCellFooter" = "Змяншае колькасць мэтавай рэкламы і дапамагае спыніць асочванне вашага вэб-сёрфінгу рэкламадаўцамі.";
+
+/* Footer information for tracker protection level. */
+"Settings.TrackingProtection.ProtectionLevel.Footer" = "Калі сайт не працуе належным чынам, краніце значок шчыта ў адрасным радку і адключыце ўзмоцненую ахову ад сачэння на гэтай старонцы.";
+
+/* Footer information for tracker protection level. */
+"Settings.TrackingProtection.ProtectionLevel.Footer.Lock" = "Калі сайт не працуе належным чынам, краніце значок шчыта ў адрасным радку і адключыце ўзмоцненую ахову ад сачэння на гэтай старонцы.";
 
 /* Description for standard level tracker protection */
 "Settings.TrackingProtection.ProtectionLevelStandard.Description" = "Дазваляе некаторыя трэкеры для карэктнай працы вэб-сайтаў.";
