@@ -831,6 +831,11 @@
 		ABEF80D52A254185003F52C4 /* CreditCardBottomSheetFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABEF80D42A254185003F52C4 /* CreditCardBottomSheetFooterView.swift */; };
 		ABEF80D92A2F283E003F52C4 /* CreditCardBottomSheetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABEF80D82A2F283D003F52C4 /* CreditCardBottomSheetViewModelTests.swift */; };
 		B640467E29B9B58200C5C7B6 /* TabLocationViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640467D29B9B58200C5C7B6 /* TabLocationViewTests.swift */; };
+		BA17988A2A84043300C287B6 /* foo.html in Resources */ = {isa = PBXBuildFile; fileRef = BA1798892A84043300C287B6 /* foo.html */; };
+		BA17988C2A84046700C287B6 /* foo_lit.js in Resources */ = {isa = PBXBuildFile; fileRef = BA17988B2A84046700C287B6 /* foo_lit.js */; };
+		BA17988E2A84047700C287B6 /* foo_cc.js in Resources */ = {isa = PBXBuildFile; fileRef = BA17988D2A84047600C287B6 /* foo_cc.js */; };
+		BA1798902A84197000C287B6 /* mcard.png in Resources */ = {isa = PBXBuildFile; fileRef = BA17988F2A84196F00C287B6 /* mcard.png */; };
+		BA1798922A84197B00C287B6 /* vcard.png in Resources */ = {isa = PBXBuildFile; fileRef = BA1798912A84197B00C287B6 /* vcard.png */; };
 		BD1C89CA2A1E3CE7000A4201 /* PocketFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD1C89C92A1E3CE7000A4201 /* PocketFooterView.swift */; };
 		BD4B2DE229BB4CD9005FAA50 /* SnackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4B2DE129BB4CD9005FAA50 /* SnackButton.swift */; };
 		BD4B2DE429BB4D9A005FAA50 /* TimerSnackBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4B2DE329BB4D9A005FAA50 /* TimerSnackBar.swift */; };
@@ -5420,6 +5425,11 @@
 		B9D74DA988462CC14EF29D8B /* fil */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fil; path = fil.lproj/Menu.strings; sourceTree = "<group>"; };
 		B9F246E38F80F257C59CEC4A /* ast */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ast; path = ast.lproj/HistoryPanel.strings; sourceTree = "<group>"; };
 		BA05405089CFDC6097258640 /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/3DTouchActions.strings"; sourceTree = "<group>"; };
+		BA1798892A84043300C287B6 /* foo.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = foo.html; path = Client/Assets/foo.html; sourceTree = "<group>"; };
+		BA17988B2A84046700C287B6 /* foo_lit.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = foo_lit.js; path = Client/Assets/foo_lit.js; sourceTree = "<group>"; };
+		BA17988D2A84047600C287B6 /* foo_cc.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = foo_cc.js; path = Client/Assets/foo_cc.js; sourceTree = "<group>"; };
+		BA17988F2A84196F00C287B6 /* mcard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mcard.png; path = Client/Assets/mcard.png; sourceTree = "<group>"; };
+		BA1798912A84197B00C287B6 /* vcard.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = vcard.png; path = Client/Assets/vcard.png; sourceTree = "<group>"; };
 		BA354251BD3FFF63A161E385 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/ClearHistoryConfirm.strings; sourceTree = "<group>"; };
 		BA904A3B89BC820A7A802D55 /* es-CL */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "es-CL"; path = "es-CL.lproj/Storage.strings"; sourceTree = "<group>"; };
 		BAA64356B54F1CD258764620 /* su */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = su; path = su.lproj/FindInPage.strings; sourceTree = "<group>"; };
@@ -10379,6 +10389,11 @@
 		F84B21B51A090F8100AAB793 = {
 			isa = PBXGroup;
 			children = (
+				BA1798912A84197B00C287B6 /* vcard.png */,
+				BA17988F2A84196F00C287B6 /* mcard.png */,
+				BA17988D2A84047600C287B6 /* foo_cc.js */,
+				BA17988B2A84046700C287B6 /* foo_lit.js */,
+				BA1798892A84043300C287B6 /* foo.html */,
 				962C6C39297054A700354BE8 /* Package.swift */,
 				962C6C3F2971F5D400354BE8 /* Dangerfile.swift */,
 				962C6C3B297054EC00354BE8 /* Sources */,
@@ -11623,6 +11638,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA1798922A84197B00C287B6 /* vcard.png in Resources */,
+				BA1798902A84197000C287B6 /* mcard.png in Resources */,
+				BA17988E2A84047700C287B6 /* foo_cc.js in Resources */,
+				BA17988C2A84046700C287B6 /* foo_lit.js in Resources */,
+				BA17988A2A84043300C287B6 /* foo.html in Resources */,
 				8C92DE8E2A711F970090BD28 /* productadsdata-response.json in Resources */,
 				43F92B3829E9F52B000C0F17 /* AutofillAllFramesAtDocumentStart.js in Resources */,
 				39D056382665235700FBEE59 /* initial_experiments.json in Resources */,

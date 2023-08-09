@@ -7,12 +7,14 @@ import UIKit
 import Shared
 import Storage
 import SwiftUI
+import WebKit
 
 class CreditCardSettingsViewController: SensitiveViewController, Themeable {
     var viewModel: CreditCardSettingsViewModel
     var themeObserver: NSObjectProtocol?
     var themeManager: ThemeManager
     var notificationCenter: NotificationProtocol
+    var settingsWebView: WKWebView!
 
     private let logger: Logger
 
@@ -94,6 +96,34 @@ class CreditCardSettingsViewController: SensitiveViewController, Themeable {
 
         // Setup state and update view
         updateCreditCardList()
+
+
+        let guide = view.safeAreaLayoutGuide
+        let webConfig = WKWebViewConfiguration()
+        webConfig.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
+        settingsWebView = WKWebView(frame: .zero, configuration: webConfig)
+        self.settingsWebView.uiDelegate = self
+
+        if let htmlPath = Bundle.main.path(forResource: "foo", ofType: "html") {
+            let url = URL(fileURLWithPath: htmlPath)
+            settingsWebView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
+        }
+
+
+        settingsWebView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(settingsWebView)
+
+        let webViewHeight: CGFloat = 600  // or whatever height you want
+
+        NSLayoutConstraint.activate([
+            settingsWebView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            settingsWebView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            settingsWebView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            settingsWebView.heightAnchor.constraint(equalToConstant: webViewHeight)
+        ])
+
+
+        
     }
 
     private func updateCreditCardList() {
@@ -102,6 +132,7 @@ class CreditCardSettingsViewController: SensitiveViewController, Themeable {
             DispatchQueue.main.async { [weak self] in
                 let newState = creditCards?.isEmpty ?? true ? CreditCardSettingsState.empty : CreditCardSettingsState.list
                 self?.updateState(type: newState)
+                self?.notifyWebview(creditCards: creditCards ?? [])
             }
         }
     }
@@ -122,6 +153,34 @@ class CreditCardSettingsViewController: SensitiveViewController, Themeable {
             creditCardEmptyView.view.isHidden = true
             creditCardTableViewController.view.isHidden = false
             navigationItem.rightBarButtonItem = addCreditCardButton
+           
+        }
+    }
+
+    private func notifyWebview(creditCards: [MozillaAppServices.CreditCard]) {
+        let jsonData = serializeCreditCardsToJSON(creditCards: creditCards)
+        if let jsonData = jsonData {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.settingsWebView.evaluateJavaScript("window.postMessage('\(jsonData)', '*');", completionHandler: nil)
+            }
+        } else {
+            print("Failed to serialize data to JSON.")
+        }
+    }
+    
+    func creditCardToDictionary(creditCard: MozillaAppServices.CreditCard) -> [String: Any] {
+        return ["ccName": creditCard.ccName, "ccLast4": creditCard.ccNumberLast4, "ccExp": "\(creditCard.ccExpMonth)/\(String(creditCard.ccExpYear).suffix(2))","ccType": creditCard.ccType]
+    }
+
+    func serializeCreditCardsToJSON(creditCards: [MozillaAppServices.CreditCard]) -> String? {
+        let dictionaries = creditCards.map(creditCardToDictionary)
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: dictionaries, options: [])
+            return String(data: jsonData, encoding: .utf8)
+        } catch let error {
+            print("Failed to serialize to JSON: \(error.localizedDescription)")
+            return nil
         }
     }
 
@@ -186,4 +245,17 @@ class CreditCardSettingsViewController: SensitiveViewController, Themeable {
     private func viewCreditCard(card: CreditCard) {
         updateState(type: .view, creditCard: card)
     }
+    
 }
+
+extension CreditCardSettingsViewController: WKUIDelegate {
+    func webView(_ webView: WKWebView, runJavaScriptAlertPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping () -> Void) {
+        let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action) in
+            completionHandler()
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
+}
+
+
