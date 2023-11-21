@@ -10,9 +10,9 @@ import Storage
 
 struct CreditCardPayload: Codable {
     let ccNumber: String
-    let ccExpMonth: String
-    let ccExpYear: String
-    let ccName: String
+    let ccExpMonth: String?
+    let ccExpYear: String?
+    let ccName: String?
 
     enum CodingKeys: String, CodingKey, CaseIterable {
         case ccNumber = "cc-number"
@@ -116,9 +116,9 @@ class CreditCardHelper: TabContentScript {
         var ccPlainText = UnencryptedCreditCardFields()
         let creditCardValidator = CreditCardValidator()
 
-        ccPlainText.ccName = payload.ccName
-        ccPlainText.ccExpMonth = Int64(payload.ccExpMonth.filter { $0.isNumber }) ?? 0
-        ccPlainText.ccExpYear = Int64(payload.ccExpYear.filter { $0.isNumber }) ?? 0
+        ccPlainText.ccName = payload.ccName ?? ""
+        ccPlainText.ccExpMonth = Int64(payload.ccExpMonth?.filter { $0.isNumber } ?? "") ?? 0
+        ccPlainText.ccExpYear = Int64(payload.ccExpYear?.filter { $0.isNumber } ?? "") ?? 0
         ccPlainText.ccNumber = "\(payload.ccNumber.filter { $0.isNumber })"
         ccPlainText.ccNumberLast4 = ccPlainText.ccNumber.count > 4 ? String(ccPlainText.ccNumber.suffix(4)) : ""
         ccPlainText.ccType = creditCardValidator.cardTypeFor(ccPlainText.ccNumber)?.rawValue ?? ""
