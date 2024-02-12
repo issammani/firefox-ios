@@ -52,10 +52,11 @@ extension WKUserScript {
     public class func createInDefaultContentWorld(
         source: String,
         injectionTime: WKUserScriptInjectionTime,
-        forMainFrameOnly: Bool
+        forMainFrameOnly: Bool,
+        forSecureContextOnly: Bool = false
     ) -> WKUserScript {
         return WKUserScript(
-            source: source,
+            source: forSecureContextOnly ? createSecureScriptSource(source) : source,
             injectionTime: injectionTime,
             forMainFrameOnly: forMainFrameOnly,
             in: .defaultClient
@@ -65,13 +66,28 @@ extension WKUserScript {
     public class func createInPageContentWorld(
         source: String,
         injectionTime: WKUserScriptInjectionTime,
-        forMainFrameOnly: Bool
+        forMainFrameOnly: Bool,
+        forSecureContextOnly: Bool = false
     ) -> WKUserScript {
         return WKUserScript(
-            source: source,
+            source: forSecureContextOnly ? createSecureScriptSource(source) : source,
             injectionTime: injectionTime,
             forMainFrameOnly: forMainFrameOnly,
             in: .page
         )
+    }
+    
+    // Scripts wrapped in this function will only run in secure context
+    // Note: If mixed content is allowed e.g loading http iframe inside an https site we want to disallow
+    // that as well. For most cases checking the top frame protocol is enough
+    private class func createSecureScriptSource(_ script: String) -> String {
+        return """
+        (function() {
+            if (window.location.protocol !== 'https:' || top.location.protocol !== 'https:') {
+                return;
+            }
+            \(script)
+        })();
+        """
     }
 }
