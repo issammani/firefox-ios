@@ -61,7 +61,8 @@ class UserScriptManager: FeatureFlaggable {
                 let userScript = WKUserScript.createInDefaultContentWorld(
                     source: wrappedSource,
                     injectionTime: injectionTime,
-                    forMainFrameOnly: mainFrameOnly)
+                    forMainFrameOnly: mainFrameOnly,
+                    forSecureContextOnly: true)
                 compiledUserScripts[autofillName] = userScript
             }
 
