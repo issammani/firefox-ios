@@ -23,6 +23,7 @@ class FormAutofillHelper: TabContentScript {
     enum HandlerName: String {
         case addressFormMessageHandler
         case creditCardFormMessageHandler
+        case addressFormTelemetryMessageHandler
     }
 
     // MARK: - Properties
@@ -51,7 +52,9 @@ class FormAutofillHelper: TabContentScript {
     // MARK: - Script Message Handler
 
     func scriptMessageHandlerNames() -> [String]? {
-        return [HandlerName.addressFormMessageHandler.rawValue, HandlerName.creditCardFormMessageHandler.rawValue]
+        return [HandlerName.addressFormMessageHandler.rawValue,
+            HandlerName.addressFormTelemetryMessageHandler.rawValue,
+            HandlerName.creditCardFormMessageHandler.rawValue]
     }
 
     // MARK: - Deinitialization
@@ -74,6 +77,32 @@ class FormAutofillHelper: TabContentScript {
         frame = message.frameInfo
 
         switch HandlerName(rawValue: message.name) {
+        case .addressFormTelemetryMessageHandler:
+            // We can get two types of payload here:
+            // First payload:
+            // {
+            //   type: "scalar",
+            //   name: "formautofill.addresses.detected_sections_count",
+            //   value: Number,
+            // }
+            // This payload needs to be mapped to a counter type in Glean and use .add(value) example:
+            // https://github.com/mozilla-mobile/firefox-ios/blob/b5155bed5580c781bb6005d201e3be0553bbc4b6/firefox-ios/Client/metrics.yaml#L518-L519
+            // https://github.com/mozilla-mobile/firefox-ios/blob/b5155bed5580c781bb6005d201e3be0553bbc4b6/firefox-ios/Client/Telemetry/TelemetryWrapper.swift#L1183
+            //
+            // Second payload:
+            //
+            // {
+            //   type: "event",
+            //   category: "address",
+            //   method: "detected" | "filled" | "filled_modified",
+            //   object: "address_form" | "address_form_ext",
+            //   value: String,
+            //   extra: Any,
+            // }
+            // This payload needs to be mapped to: TelemetryWrapper.recordEvent
+            
+            
+            // These need to be mapped to
         case .addressFormMessageHandler:
             // Parse message payload for address form autofill
             guard let data = getValidPayloadData(from: message),
