@@ -560,7 +560,7 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
     }
   }
 
-  document.addEventListener("focusin", (ev) => onFocusIn(ev));
+  document.addEventListener("focusin", (ev) => onFocusIn(ev), {capture: true});
     
   var LoginUtils = {
     /*
