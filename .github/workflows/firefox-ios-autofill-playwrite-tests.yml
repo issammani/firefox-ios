@@ -29,20 +29,26 @@ jobs:
           run: |
             github_action_name="Update credential provider script"
             echo "github_action_name=$github_action_name" >> $GITHUB_ENV
-        - name: Clone repository
-          run: |
-            git clone https://github.com/issammani/test-playwright.git
         - name: Install node
           uses: actions/setup-node@v4
           with:
            node-version: 18
-        - run: |
-            echo "Install dependencies and run tests"
+        - name: Build autofill bundle
+          run: |
+            echo "Install autofill bundle dependencies"
+            npm i
+            echo "Building bundle using webpack"
+            npm run build
+            echo "Copying bundle to test directory"
+            cp AutofillAllFramesAtDocumentStart.js firefox-ios/Client/Assets/CC_Script/testing/
+            echo "Moving to test directory"
+            cd firefox-ios/Client/Assets/CC_Script/testing/
+        - name: Install playwright
+          run: |
+            echo "Install test dependencies and run tests"
             npm i
             npm install --save concurrently
             npm i -D @playwright/test
-
-            cd test-playwright
             echo "Install playwright"
             npx playwright install
             
