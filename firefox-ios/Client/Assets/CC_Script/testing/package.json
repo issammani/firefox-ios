@@ -1,0 +1,17 @@
+{
+    "name": "test-playwright",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test": "concurrently --kill-others \"npm run start:server\" \"npx playwright test\"",
+      "start:server": "node server.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "@playwright/test": "^1.40.1",
+      "concurrently": "^8.2.2"
+    }
+  }

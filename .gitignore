@@ -102,6 +102,9 @@ firefox-ios/Client/Assets/addressFormLayout.js
 firefox-ios/Client/Assets/AddressFormManager.js
 firefox-ios/Client/Assets/*.js.LICENSE.txt
 
+# playwright generated files
+test-results
+
 # L10n
 /firefoxios-l10n
 /ios-l10n-scripts
