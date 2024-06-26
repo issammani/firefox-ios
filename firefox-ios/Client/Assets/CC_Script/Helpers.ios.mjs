@@ -31,6 +31,10 @@ HTMLInputElement.prototype.setUserInput = function (value) {
   this.dispatchEvent(new Event("blur", { bubbles: true }));
 };
 
+HTMLInputElement.prototype.hasBeenTypePassword = function () {
+  return this.type === "password";
+};
+
 // Mimic the behavior of .getAutocompleteInfo()
 // It should return an object with a fieldName property matching the autocomplete attribute
 // only if it's a valid value from this list https://searchfox.org/mozilla-central/source/dom/base/AutocompleteFieldList.h#89-149

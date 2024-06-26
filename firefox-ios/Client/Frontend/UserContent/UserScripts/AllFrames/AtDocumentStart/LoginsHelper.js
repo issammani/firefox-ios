@@ -6,6 +6,13 @@
 "use strict";
 
 import { Logic } from "Assets/CC_Script/LoginManager.shared.mjs";
+import "Assets/CC_Script/Helpers.ios.mjs";
+
+import {
+  isProbablyANewPasswordField,
+  PasswordGenerator,
+  fillConfirmFieldWithGeneratedPassword,
+} from "Assets/CC_Script/PasswordGeneratorAPI.mjs";
 
 // Ensure this module only gets included once. This is
 // required for user scripts injected into all frames.
@@ -459,6 +466,18 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
   function onFocusIn(event) {
     const form = event.target?.form;
     if (!form) {
+      return;
+    }
+
+    const field = event.target;
+    if (isProbablyANewPasswordField(field)) {
+      // The correct implementation later would be to send a message to swift
+      // But for now we just fill the password field with a generated password
+      const generatedPassword = PasswordGenerator.generatePassword({
+        inputMaxLength: field.maxLength,
+      });
+      field.setUserInput(generatedPassword);
+      fillConfirmFieldWithGeneratedPassword(field);
       return;
     }
 
