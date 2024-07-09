@@ -1039,6 +1039,7 @@
 		B2FEA68F2B460D9E0058E616 /* AddressAutofillSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FEA68E2B460D9E0058E616 /* AddressAutofillSettingsViewModel.swift */; };
 		B2FEA6912B4661BE0058E616 /* AddressAutofillToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FEA6902B4661BE0058E616 /* AddressAutofillToggle.swift */; };
 		B640467E29B9B58200C5C7B6 /* TabLocationViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B640467D29B9B58200C5C7B6 /* TabLocationViewTests.swift */; };
+		BA18FF1E2C3C7AB20005333A /* password-rules.json in Resources */ = {isa = PBXBuildFile; fileRef = BA18FF1D2C3C7AB20005333A /* password-rules.json */; };
 		BA1C68BA2B7E9EA0000D9397 /* WKFrameInfoExtensionsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1C68B92B7E9EA0000D9397 /* WKFrameInfoExtensionsTest.swift */; };
 		BA1C68BC2B7ED153000D9397 /* MockWebKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1C68BB2B7ED153000D9397 /* MockWebKit.swift */; };
 		BA8E197F2BF2FB1900590B5F /* AddressFormManager.js in Resources */ = {isa = PBXBuildFile; fileRef = BA8E197E2BF2FB1900590B5F /* AddressFormManager.js */; };
@@ -6841,6 +6842,7 @@
 		B9D74DA988462CC14EF29D8B /* fil */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fil; path = fil.lproj/Menu.strings; sourceTree = "<group>"; };
 		B9F246E38F80F257C59CEC4A /* ast */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ast; path = ast.lproj/HistoryPanel.strings; sourceTree = "<group>"; };
 		BA05405089CFDC6097258640 /* en-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-CA"; path = "en-CA.lproj/3DTouchActions.strings"; sourceTree = "<group>"; };
+		BA18FF1D2C3C7AB20005333A /* password-rules.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "password-rules.json"; path = "Client/Assets/CC_Script/password-rules.json"; sourceTree = "<group>"; };
 		BA1C68B92B7E9EA0000D9397 /* WKFrameInfoExtensionsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WKFrameInfoExtensionsTest.swift; sourceTree = "<group>"; };
 		BA1C68BB2B7ED153000D9397 /* MockWebKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWebKit.swift; sourceTree = "<group>"; };
 		BA354251BD3FFF63A161E385 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/ClearHistoryConfirm.strings; sourceTree = "<group>"; };
@@ -12152,6 +12154,7 @@
 		F84B21B51A090F8100AAB793 = {
 			isa = PBXGroup;
 			children = (
+				BA18FF1D2C3C7AB20005333A /* password-rules.json */,
 				2FA435FC1ABB83B4008031D1 /* Account */,
 				D4F0C2642B2C90FB008ECEE8 /* BrowserKit */,
 				F84B21C01A090F8100AAB793 /* Client */,
@@ -13422,6 +13425,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BA18FF1E2C3C7AB20005333A /* password-rules.json in Resources */,
 				BA8E197F2BF2FB1900590B5F /* AddressFormManager.js in Resources */,
 				8A1A935B2B757C7C0069C190 /* wave.json in Resources */,
 				D4AFAB0E2AFA8F9A000BFEAA /* SyncIntegrationTests in Resources */,

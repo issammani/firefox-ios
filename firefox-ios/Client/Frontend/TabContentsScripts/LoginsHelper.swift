@@ -32,7 +32,7 @@ struct LoginItem: Codable {
     var hostname: String
 }
 
-class LoginsHelper: TabContentScript {
+class LoginsHelper: NSObject, TabContentScript, WKUIDelegate  {
     private weak var tab: Tab?
     private let profile: Profile
     private let theme: Theme
@@ -57,6 +57,8 @@ class LoginsHelper: TabContentScript {
         self.tab = tab
         self.profile = profile
         self.theme = theme
+        super.init()
+        tab.webView?.uiDelegate = self
     }
 
     func scriptMessageHandlerNames() -> [String]? {
@@ -148,8 +150,42 @@ class LoginsHelper: TabContentScript {
             }
         }
     }
-
+    
+    
+    
+    // Super ugly but only for demoing purposes
+    func showAlertAndHandleResponse() {
+        let jsAlert = "confirm('Do you want to generate a password?');"
+        tab?.webView?.evaluateJavascriptInDefaultContentWorld(jsAlert) { result, _ in
+            guard let confirmed = result as? Bool, confirmed else {
+                print("User cancelled the password generation")
+                return
+            }
+            
+            let rules = loadPasswordRules()
+            guard let currentURL = self.tab?.webView?.url, let host = currentURL.host else {
+                print("Unable to get current URL or host")
+                return
+            }
+            
+            let jsFunctionCall: String
+            if let matchedRule = rules?.first(where: { $0.domain == host }) {
+                let passwordRules = matchedRule.passwordRules
+                jsFunctionCall = "window.__firefox__.logins.generatePassword('\(passwordRules)')"
+            } else {
+                jsFunctionCall = "window.__firefox__.logins.generatePassword()"
+            }
+            
+            self.tab?.webView?.evaluateJavascriptInDefaultContentWorld(jsFunctionCall)
+        }
+    }
+    
     private func sendMessageType(_ message: FieldFocusMessage) {
+        
+        if(message.type == "generatePassword") {
+            showAlertAndHandleResponse()
+            return
+        }
         // NOTE: This is a partial stub / placeholder
         // FXIOS-3856 will further enhance the logs into actual callback
         switch message.fieldType {
@@ -346,6 +382,22 @@ class LoginsHelper: TabContentScript {
         let jsFocusCallback = "window.__firefox__.logins.yieldFocusBackToField()"
         tab.webView?.evaluateJavascriptInDefaultContentWorld(jsFocusCallback)
     }
+    
+    // tmp: just for demo
+    func webView(_ webView: WKWebView, runJavaScriptConfirmPanelWithMessage message: String, initiatedByFrame frame: WKFrameInfo, completionHandler: @escaping (Bool) -> Void) {
+        let alert = UIAlertController(title: "Confirm", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            completionHandler(true)
+        })
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            completionHandler(false)
+        })
+        // Assuming `tab` has a reference to a view controller or window to present the alert
+        if let vc = UIApplication.shared.windows.first?.rootViewController {
+            vc.present(alert, animated: true, completion: nil)
+        }
+    }
+    
 
     // MARK: Theming System
     private func applyTheme(for views: UIView...) {
@@ -369,3 +421,43 @@ class LoginsHelper: TabContentScript {
                                      object: .loginsSaved)
     }
 }
+
+
+// Mark - Password generator test
+
+struct PasswordRule: Codable {
+    let domain: String
+    let passwordRules: String
+    let id: String
+    let lastModified: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case domain = "Domain"
+        case passwordRules = "password-rules"
+        case id
+        case lastModified = "last_modified"
+    }
+}
+
+struct PasswordRuleData: Codable {
+    let data: [PasswordRule]
+}
+
+func loadPasswordRules() -> [PasswordRule]? {
+    guard let url = Bundle.main.url(forResource: "password-rules", withExtension: "json") else {
+        print("JSON file not found")
+        return nil
+    }
+    
+    do {
+        let data = try Data(contentsOf: url)
+        let decoder = JSONDecoder()
+        let passwordRuleData = try decoder.decode(PasswordRuleData.self, from: data)
+        return passwordRuleData.data
+    } catch {
+        print("Error decoding JSON: \(error)")
+        return nil
+    }
+}
+
+

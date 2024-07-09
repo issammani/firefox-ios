@@ -12,7 +12,10 @@ import {
   isProbablyANewPasswordField,
   PasswordGenerator,
   fillConfirmFieldWithGeneratedPassword,
+  transformRulesToMap,
 } from "Assets/CC_Script/PasswordGeneratorAPI.mjs";
+
+import { PasswordRulesParser } from "Assets/CC_Script/PasswordRulesParser.sys.mjs";
 
 // Ensure this module only gets included once. This is
 // required for user scripts injected into all frames.
@@ -457,6 +460,27 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
     LoginManagerContent.activeField?.focus();
   }
 
+  function generatePassword(rules) {
+    const field = document.activeElement;
+
+    let mapOfRules = null;
+    if(rules) {
+      const domainRules = PasswordRulesParser.parsePasswordRules(
+        rules
+      );
+      mapOfRules = transformRulesToMap(domainRules);
+    }
+      // The correct implementation later would be to send a message to swift
+      // But for now we just fill the password field with a generated password
+      const generatedPassword = PasswordGenerator.generatePassword({
+        inputMaxLength: field.maxLength,
+        ...(rules ? { rules: mapOfRules } : {})
+      });
+
+      field.setUserInput(generatedPassword);
+      fillConfirmFieldWithGeneratedPassword(field);
+  }
+
   // define the field types for focus events
   const FocusFieldType = {
     username: "username",
@@ -471,13 +495,11 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
 
     const field = event.target;
     if (isProbablyANewPasswordField(field)) {
-      // The correct implementation later would be to send a message to swift
-      // But for now we just fill the password field with a generated password
-      const generatedPassword = PasswordGenerator.generatePassword({
-        inputMaxLength: field.maxLength,
+
+      webkit.messageHandlers.loginsManagerMessageHandler.postMessage({
+        type: "generatePassword",
+        fieldType: "password", // Unnecessary, but need to change type defs in swift
       });
-      field.setUserInput(generatedPassword);
-      fillConfirmFieldWithGeneratedPassword(field);
       return;
     }
 
@@ -492,7 +514,7 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
   }
 
   document.addEventListener("focusin", (ev) => onFocusIn(ev), {capture: true});
-    
+
   var LoginUtils = {
     /*
      * _getPasswordOrigin
@@ -535,6 +557,7 @@ window.__firefox__.includeOnce("LoginsHelper", function() {
       }
     };
     this.yieldFocusBackToField = yieldFocusBackToField;
+    this.generatePassword = generatePassword;
   }
 
   Object.defineProperty(window.__firefox__, "logins", {

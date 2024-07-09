@@ -87,4 +87,36 @@ export const fillConfirmFieldWithGeneratedPassword = (passwordField) => {
   }
 };
 
+// Copied as is from: https://searchfox.org/mozilla-central/rev/a5bcdc6afbcfccf9f293ace0fddf11307e5bc22c/toolkit/components/passwordmgr/PasswordRulesManager.sys.mjs#43-81
+
+export const transformRulesToMap = (rules) => {
+  let map = new Map();
+  for (let rule of rules) {
+    let { _name, value } = rule;
+    if (
+      _name === "minlength" ||
+      _name === "maxlength" ||
+      _name === "max-consecutive"
+    ) {
+      map.set(_name, value);
+    } else {
+      let _value = [];
+      if (map.get(_name)) {
+        _value = map.get(_name);
+      }
+      for (let _class of value) {
+        let { _name: _className } = _class;
+        if (_className) {
+          _value.push(_className);
+        } else {
+          let { _characters } = _class;
+          _value.push(_characters);
+        }
+      }
+      map.set(_name, _value);
+    }
+  }
+  return map;
+};
+
 export { PasswordGenerator } from "resource://gre/modules/PasswordGenerator.sys.mjs";
